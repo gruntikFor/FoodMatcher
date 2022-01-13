@@ -18,12 +18,10 @@ public class IndexController {
 
         UserTest returnUser = userTestRepository.findById(1L).get();
 
-
         UserTest userTest = new UserTest();
-        userTest.setName("igor");
+        userTest.setName("igor2");
 
         userTestRepository.save(userTest);
-
 
         model.addAttribute("userTest", returnUser);
         return "index";
