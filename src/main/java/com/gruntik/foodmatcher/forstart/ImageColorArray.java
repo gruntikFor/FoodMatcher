@@ -1,8 +1,10 @@
 package com.gruntik.foodmatcher.forstart;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,26 +24,53 @@ public class ImageColorArray {
 
     public static void main(String[] args) throws IOException {
 
+        long startProgram0 = System.currentTimeMillis();
+
         BufferedImage bufferedImage = ImageIO.read(new File("D://FoodMatcher/images/img.png"));
-//        Color color = ImageColor.getPixelColor(bufferedImage, 2, 0);
-//        System.out.println(color);
+
+        Image image = bufferedImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+
+        Color color = getSpecificColor(image, 0, 0);
+
+        System.out.println(color);
 
         float[][][] array = new float[bufferedImage.getWidth()][bufferedImage.getHeight()][3];
 
+        long startProgram1 = System.currentTimeMillis();
         array = getRGBArray(array, bufferedImage);
-//        printTripleArray(array);
+        long endProgram1 = System.currentTimeMillis();
+        System.out.println("getRGBArray: " + (endProgram1 - startProgram1) / 1000);
 
         ArrayList<String> stringArrayList = tripleArrayToStringArrayList(array);
-
-        System.out.println(stringArrayList.size());
-        System.out.println(stringArrayList);
 
         Map<String, Integer> mapWord = FrequencyWord.getMostFrequencyWord(stringArrayList);
         mapWord = FrequencyWord.sortMap(mapWord);
 
-        System.out.println(mapWord);
         System.out.println("Most frequency color is: " + FrequencyWord.getFirstColorFromMap(mapWord));
 
+        long endProgram0 = System.currentTimeMillis();
+        System.out.println("time perform: " + (endProgram0 - startProgram0) / 1000.0);
+
+    }
+
+    public static Color getSpecificColor(Image image, int x, int y) {
+        if (image instanceof BufferedImage) {
+            return new Color(((BufferedImage) image).getRGB(x, y));
+        }
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        int[] pixels = new int[width * height];
+        PixelGrabber grabber = new PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
+        try {
+            grabber.grabPixels();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int c = pixels[x * width + y];
+        int red = (c & 0x00ff0000) >> 16;
+        int green = (c & 0x0000ff00) >> 8;
+        int blue = c & 0x000000ff;
+        return new Color(red, green, blue);
     }
 
     public static ArrayList<String> tripleArrayToStringArrayList(float[][][] array) {
