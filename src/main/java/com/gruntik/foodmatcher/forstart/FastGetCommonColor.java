@@ -3,13 +3,13 @@ package com.gruntik.foodmatcher.forstart;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
 public class FastGetCommonColor {
 
+    //right version
     public static void main(String[] args) throws IOException {
 
         BufferedImage bufferedImage = ImageIO.read(new File("D://FoodMatcher/images/img.png"));
