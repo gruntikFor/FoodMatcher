@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class FastGetCommonColor {
 
+    //right version
     public static void main(String[] args) throws IOException {
 
         BufferedImage bufferedImage = ImageIO.read(new File("D://FoodMatcher/images/img.png"));
